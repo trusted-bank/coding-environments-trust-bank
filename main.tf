@@ -55,14 +55,14 @@ subnet_id     = aws_subnet.public.id
 }
 
 resource "aws_eip" "nat_eip" {
-vpc = true
+domain = "vpc"
 }
 
 
 resource "aws_instance" "bastion" {
   ami           = "ami-064519b8c76274859"
   instance_type = "t2.micro"
-  key_name      = "ec2-debian-wsl"
+  key_name      = var.key_name
 
   subnet_id = aws_subnet.public.id
 
@@ -76,7 +76,7 @@ resource "aws_instance" "bastion" {
 resource "aws_instance" "web_server" {
   ami           = "ami-064519b8c76274859"
   instance_type = "t2.micro"
-  key_name      = "ec2-debian-wsl"
+  key_name      = var.key_name
 
   subnet_id = aws_subnet.private.id
 
