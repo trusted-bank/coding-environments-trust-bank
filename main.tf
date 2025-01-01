@@ -134,4 +134,13 @@ resource "aws_security_group" "web_server_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+}
+
+output "instance_public_ip" {
+value = aws_instance.bastion.public_ip
+}
+
+output "instance_private_ip" {
+value = aws_instance.web_server.private_ip
 }
