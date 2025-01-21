@@ -52,9 +52,18 @@ echo "3) prod"
 read -p "Escolha uma opção (1, 2 ou 3): " ENV_OPTION
 
 case $ENV_OPTION in
-1) ENV_DIR="$(pwd)/infra/env/dev" ;;
-2) ENV_DIR="$(pwd)/infra/env/homol" ;;
-3) ENV_DIR="$(pwd)/infra/env/prod" ;;
+1)
+    ENV_DIR="$(pwd)/infra/env/dev"
+    SUFFIX="dev"
+    ;;
+2)
+    ENV_DIR="$(pwd)/infra/env/homol"
+    SUFFIX="hml"
+    ;;
+3)
+    ENV_DIR="$(pwd)/infra/env/prod"
+    SUFFIX="prod"
+    ;;
 *)
     echo "Opção inválida. Saindo..."
     exit 1
@@ -71,8 +80,8 @@ read -p "Digite o caminho completo para sua chave privada: " DIR_PRIVATE_KEY_NAM
 
 cd "$ENV_DIR" || exit
 
-INSTANCE_PUBLIC_IP_BASTION=$(terraform output -raw instance_public_ip-bastion-dev)
-INSTANCE_PRIVATE_IP_WEBSERVER=$(terraform output -raw instance_private_ip-web-server-dev)
-INSTANCE_PRIVATE_IP_PRIVATE_SERVER=$(terraform output -raw instance_private_ip-dev)
+INSTANCE_PUBLIC_IP_BASTION=$(terraform output -raw instance_public_ip-bastion-$SUFFIX)
+INSTANCE_PRIVATE_IP_WEBSERVER=$(terraform output -raw instance_private_ip-web-server-$SUFFIX)
+INSTANCE_PRIVATE_IP_PRIVATE_SERVER=$(terraform output -raw instance_private_ip-$SUFFIX)
 
 setup_ssh_connection "$DIR_PRIVATE_KEY_NAME" "$INSTANCE_PUBLIC_IP_BASTION" "$INSTANCE_PRIVATE_IP_WEBSERVER" "$INSTANCE_PRIVATE_IP_PRIVATE_SERVER"
